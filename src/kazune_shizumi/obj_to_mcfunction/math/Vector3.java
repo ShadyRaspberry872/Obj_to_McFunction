@@ -1,14 +1,29 @@
 package kazune_shizumi.obj_to_mcfunction.math;
 
 public class Vector3 {
-    public final double x;
-    public final double y;
-    public final double z;
+    public double x;
+    public double y;
+    public double z;
+
+    public Vector3(double[] c) {
+        this(c[0], c[1], c[2]);
+    }
 
     public Vector3(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public double[] toArray() {
+        return new double[] { x, y, z };
+    }
+
+    public Vector3 addSelf(Vector3 vector) {
+        this.x += vector.x;
+        this.y += vector.y;
+        this.z += vector.z;
+        return this;
     }
 
     public Vector3 add(Vector3 vector) {
@@ -17,6 +32,13 @@ public class Vector3 {
 
     public Vector3 subtract(Vector3 vector) {
         return new Vector3(x - vector.x, y - vector.y, z - vector.z);
+    }
+
+    public Vector3 multiplySelf(Vector3 vector) {
+        this.x *= vector.x;
+        this.y *= vector.y;
+        this.z *= vector.z;
+        return this;
     }
 
     public Vector3 multiply(Vector3 vector) {

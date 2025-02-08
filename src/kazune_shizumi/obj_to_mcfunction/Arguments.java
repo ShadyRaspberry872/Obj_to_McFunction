@@ -8,9 +8,9 @@ import java.nio.file.Paths;
 public final class Arguments {
     public static Path input = null;
     public static Path output = null;
-    public static int width = -1;
-    public static int height = -1;
-    public static int depth = -1;
+    public static long width = -1;
+    public static long height = -1;
+    public static long depth = -1;
     public static int autoDimensions = -1;
 
     static void print() {
