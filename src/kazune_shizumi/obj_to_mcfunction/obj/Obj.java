@@ -13,9 +13,13 @@ import java.util.List;
 
 public class Obj {
 
+    public final List<String> lines;
+
     public final List<Vector2> uvs = new ArrayList<>();
     public final List<Vector3> vertices = new ArrayList<>();
     public final List<Triangle> triangles = new ArrayList<>();
+
+    public Mtl mtl = null;
 
     public double minX = Double.MAX_VALUE;
     public double minY = Double.MAX_VALUE;
@@ -27,19 +31,20 @@ public class Obj {
     public double sizeY = Double.NEGATIVE_INFINITY;
     public double sizeZ = Double.NEGATIVE_INFINITY;
 
-    public Obj(Path objPath) throws IOException {
-        this(Files.readAllLines(objPath));
+    public Obj(Path path) throws IOException {
+        this(Files.readAllLines(path));
     }
 
-    public Obj(List<String> objLines) {
-        parseData(objLines);
+    public Obj(List<String> lines) {
+        this.lines = lines;
+        parseData();
         getBounding();
     }
 
-    private void parseData(List<String> objLines) {
-        Console.println(Console.GREEN + "OBJ: " + Console.RESET + "Parsing " + Console.CYAN + objLines.size() + Console.RESET + " lines");
+    private void parseData() {
+        Console.println(Console.GREEN + "OBJ: " + Console.RESET + "Parsing " + Console.CYAN + lines.size() + Console.RESET + " lines");
         String currentMaterialId = null;
-        for (String line : objLines) {
+        for (String line : lines) {
             if (line.startsWith("vt ")) parseUV(line);
             if (line.startsWith("v ")) parseVertex(line);
             if (line.startsWith("f ")) parseFace(line, currentMaterialId);
@@ -107,9 +112,7 @@ public class Obj {
 
     public void offset(Vector3 vector3) {
         for (Vector3 vertex : vertices) {
-            Console.println(Console.RED + "from " + vertex);
             vertex.addSelf(vector3);
-            Console.println(Console.RED + "to " + vertex);
         }
     }
 

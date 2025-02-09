@@ -1,6 +1,11 @@
 # .obj to .mcfunction converter
 Convert an .obj file to one or more .mcfunction files to import a model into Minecraft
 
+# 🚨 WARNING: UNFINISHED CODE 🚨
+This project is currently in development and incomplete.
+
+Running it will be non-functional, or may produce errors.
+
 # Usage
 After downloading the build from Releases or compiling the code yourself, run the converter using the following command:
 ```sh

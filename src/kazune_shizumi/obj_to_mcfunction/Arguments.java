@@ -13,9 +13,29 @@ public final class Arguments {
     public static long depth = -1;
     public static int autoDimensions = -1;
 
+    static void autoComputeDimensions(double sizeX, double sizeY, double sizeZ) {
+        if (autoDimensions == 0) {
+            height = Math.round(sizeY * width / sizeX);
+            depth = Math.round(sizeZ * width / sizeX);
+        }
+        if (autoDimensions == 1) {
+            width = Math.round(sizeX * height / sizeY);
+            depth = Math.round(sizeZ * height / sizeY);
+        }
+        if (autoDimensions == 2) {
+            width = Math.round(sizeX * depth / sizeZ);
+            height = Math.round(sizeY * depth / sizeZ);
+        }
+        Console.println(Console.GREEN + "Resulting structure size: " + Console.RESET +
+                "width: " + Console.CYAN + width + Console.RESET + ", " +
+                "height: " + Console.CYAN + height + Console.RESET + ", " +
+                "depth: " + Console.CYAN + depth
+        );
+    }
+
     static void print() {
-        Console.println(Console.GREEN + "Input: " + Console.RESET + input);
-        Console.println(Console.GREEN + "Output: " + Console.RESET + output);
+        Console.println(Console.GREEN + "Input: " + Console.YELLOW + input);
+        Console.println(Console.GREEN + "Output: " + Console.YELLOW + output);
         if (autoDimensions < 0) {
             Console.println(Console.GREEN + "Dimensions: " + Console.RESET +
                     "width: " + Console.CYAN + width + Console.RESET + ", " +
@@ -23,9 +43,12 @@ public final class Arguments {
                     "depth: " + Console.CYAN + depth
             );
         } else switch (autoDimensions) {
-            case 0 -> Console.println(Console.GREEN + "Auto dimensions from " + Console.RESET + "width" + Console.GREEN + ": " + Console.CYAN + width);
-            case 1 -> Console.println(Console.GREEN + "Auto dimensions from " + Console.RESET + "height" + Console.GREEN + ": " + Console.CYAN + height);
-            case 2 -> Console.println(Console.GREEN + "Auto dimensions from " + Console.RESET + "depth" + Console.GREEN + ": " + Console.CYAN + depth);
+            case 0 ->
+                    Console.println(Console.GREEN + "Auto dimensions from width: " + Console.CYAN + width);
+            case 1 ->
+                    Console.println(Console.GREEN + "Auto dimensions from height: " + Console.CYAN + height);
+            case 2 ->
+                    Console.println(Console.GREEN + "Auto dimensions from depth: " + Console.CYAN + depth);
         }
     }
 
@@ -75,7 +98,8 @@ public final class Arguments {
 
     static void assertArguments() {
         if (input == null) throw new IllegalArgumentException("Missing parameter: --input / -i");
-        if (output == null) output = Paths.get(input.getParent() + File.separator + input.getFileName().toString().replaceFirst("[.][^.]+$", "") + ".mcfunction");
+        if (output == null)
+            output = Paths.get(input.getParent() + File.separator + input.getFileName().toString().replaceFirst("[.][^.]+$", "") + ".mcfunction");
         if (autoDimensions < 0) {
             if (width < 0) throw new IllegalArgumentException("Missing parameter: --width / -w");
             if (height < 0) throw new IllegalArgumentException("Missing parameter: --height / -h");
